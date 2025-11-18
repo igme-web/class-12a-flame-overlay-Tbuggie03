@@ -19,6 +19,13 @@ class GameProvider extends ChangeNotifier {
   int get lastScore => _lastScore;
   bool get inGame => _inGame;
 
+  @override
+void dispose() {
+  musicPlayer.dispose();
+  sfxPlayer.dispose();
+  super.dispose();
+}
+
   // Setters with notifyListeners
   void setMusicVolume(double value) {
     _musicVolume = value;
@@ -39,4 +46,14 @@ class GameProvider extends ChangeNotifier {
     _lastScore = value;
     notifyListeners();
   }
+
+  // Play background music
+Future<void> playBgm(String url) async {
+  await musicPlayer.play(AssetSource(url));
+}
+
+// Play sound effect
+Future<void> playSfx(String url) async {
+  await sfxPlayer.play(AssetSource(url));
+}
 }
