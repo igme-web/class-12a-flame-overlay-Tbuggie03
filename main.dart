@@ -32,8 +32,8 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: GameWidget(
-          game: OverlayTutorial(context)..paused = true, // Cascade to pause immediately
+        body: GameWidget.controlled(
+          gameFactory: () => OverlayTutorial(context)..paused = true, // Cascade to pause immediately
           overlayBuilderMap: {
             'title': (context, game) {
               return OverlayTitle(game: game);
@@ -58,3 +58,4 @@ class MainApp extends StatelessWidget {
   }
 
 }
+
