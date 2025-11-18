@@ -19,7 +19,7 @@ import 'game_provider.dart';
 /// - the game uses TapCallbacks to handle tap events. Nothing happens yet.
 ///
 
-class OverlayTutorial extends FlameGame with TapCallbacks {
+class OverlayTutorial extends FlameGame with TapCallbacks, WidgetsBindingObserver {
   final BuildContext context;
   late final GameProvider gameProvider;
 
@@ -44,11 +44,38 @@ class OverlayTutorial extends FlameGame with TapCallbacks {
       add(Asteroid());
     }
   }
+  
+  @override
+void onAttach() {
+  super.onAttach();
+  WidgetsBinding.instance.addObserver(this);
+}
 
   @override
-void onDispose() {
-  gameProvider.dispose();
-  super.onDispose();
+void didChangeAppLifecycleState(AppLifecycleState state) {
+  super.didChangeAppLifecycleState(state);
+  switch (state) {
+    case AppLifecycleState.resumed:
+      // TODO: Print "Resumed"
+      print("resumed");
+      // TODO: Resume the game engine
+      resumeEngine();
+      // TODO: Resume the music player
+      gameProvider.musicPlayer.resume();
+      break;
+
+    case AppLifecycleState.paused:
+    case AppLifecycleState.detached:
+    case AppLifecycleState.inactive:
+    case AppLifecycleState.hidden:
+      // TODO: Print "Paused"
+      print("paused");
+      // TODO: Pause the game engine
+      pauseEngine();
+      // TODO: Pause the music player
+      gameProvider.musicPlayer.pause();
+      break;
+  }
 }
 
   @override
@@ -62,5 +89,14 @@ void onDispose() {
   gameProvider.playSfx("audio/shot.wav");
   }
 
+  
+  @override
+void onDispose() {
+  WidgetsBinding.instance.removeObserver(this);
+  gameProvider.dispose();
+  super.onDispose();
 }
+
+}
+
 
