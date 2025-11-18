@@ -54,6 +54,13 @@ void onDispose() {
   @override
   void onTapUp(TapUpEvent event) {
     super.onTapUp(event);
+
+    // Increment score
+  gameProvider.incrementScore(1);
+
+  // Play sound effect
+  gameProvider.playSfx("audio/shot.wav");
   }
 
 }
+
