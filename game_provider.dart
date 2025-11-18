@@ -8,6 +8,10 @@ class GameProvider extends ChangeNotifier {
   int _lastScore = 0;
   bool _inGame = false;
 
+  // Audio players
+  AudioPlayer musicPlayer = AudioPlayer();
+  AudioPlayer sfxPlayer = AudioPlayer();
+  
   // Getters to access private variables
   double get musicVolume => _musicVolume;
   double get sfxVolume => _sfxVolume;
